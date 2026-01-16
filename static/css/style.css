@@ -1,0 +1,391 @@
+/* 全局重置 + 喜庆主题基础样式（原项目核心） */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft Yahei", "SimHei", Arial, sans-serif;
+}
+
+body {
+    background: #fdf2f0; /* 喜庆浅红底色 */
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e84a43' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+    min-height: 100vh;
+    color: #d32f2f; /* 喜庆红文字色 */
+}
+
+/* 原项目核心喜庆卡片样式 */
+.theme-festive {
+    --primary-color: #d32f2f;
+    --secondary-color: #ff6b6b;
+    --bg-color: #fff8f8;
+    --border-color: #ffcccc;
+    --text-color: #7f0000;
+}
+
+/* 通用喜庆容器 */
+.festive-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 80px;
+}
+
+/* 喜庆标题样式 */
+.festive-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #d32f2f;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(211, 47, 47, 0.2);
+    position: relative;
+}
+
+.festive-title::after {
+    content: "";
+    display: block;
+    width: 200px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, #d32f2f, transparent);
+    margin: 10px auto;
+}
+
+/* 喜庆卡片（原项目核心布局） */
+.festive-card {
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(211, 47, 47, 0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.festive-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(211, 47, 47, 0.15);
+}
+
+/* 喜庆表单样式 */
+.festive-form .form-group {
+    margin-bottom: 20px;
+}
+
+.festive-form label {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.festive-form input,
+.festive-form select,
+.festive-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.festive-form input:focus,
+.festive-form select:focus,
+.festive-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+}
+
+/* 喜庆按钮样式（原项目核心） */
+.festive-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+}
+
+.festive-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(211, 47, 47, 0.3);
+    background: linear-gradient(to right, #b71c1c, #d32f2f);
+}
+
+.festive-btn:active {
+    transform: translateY(0);
+}
+
+/* 喜庆表格样式 */
+.festive-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.1);
+}
+
+.festive-table th {
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.festive-table td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.festive-table tr:hover {
+    background: var(--bg-color);
+}
+
+/* 登录/注册页面喜庆样式 */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.auth-card {
+    background: #fff8f8;
+    border: 2px solid #ffcccc;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(211, 47, 47, 0.15);
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+}
+
+.auth-card h2 {
+    text-align: center;
+    color: #d32f2f;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    text-shadow: 1px 1px 2px rgba(211, 47, 47, 0.2);
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #ffcccc;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    color: #7f0000;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+.tab-btn.active {
+    color: #d32f2f;
+    border-bottom: 3px solid #d32f2f;
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(to right, #d32f2f, #ff6b6b);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+}
+
+.auth-btn:hover {
+    background: linear-gradient(to right, #b71c1c, #d32f2f);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(211, 47, 47, 0.3);
+}
+
+/* 用户中心喜庆样式（适配原风格） */
+.user-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+}
+
+#user-menu-btn {
+    padding: 10px 20px;
+    background: linear-gradient(to right, #d32f2f, #ff6b6b);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff8f8;
+    border: 2px solid #ffcccc;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(211, 47, 47, 0.15);
+    width: 180px;
+    display: none;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.user-dropdown.active {
+    display: block;
+}
+
+.user-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #7f0000;
+    transition: all 0.3s;
+}
+
+.user-dropdown button:hover {
+    background: #ffebee;
+    color: #d32f2f;
+    font-weight: 600;
+}
+
+/* 密码修改弹窗喜庆样式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(211, 47, 47, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff8f8;
+    border: 2px solid #ffcccc;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(211, 47, 47, 0.2);
+}
+
+.modal-content h3 {
+    margin-bottom: 25px;
+    color: #d32f2f;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    background: #ffebee;
+    color: #d32f2f;
+    border: 2px solid #ffcccc;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cancel-btn:hover {
+    background: #ffcccc;
+    color: #b71c1c;
+}
+
+/* 提示框样式（适配喜庆风格） */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 25px;
+    border-radius: 50px;
+    color: white;
+    font-size: 1rem;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.toast-success {
+    background: linear-gradient(to right, #4caf50, #81c784);
+}
+
+.toast-error {
+    background: linear-gradient(to right, #d32f2f, #ff6b6b);
+}
+
+/* 响应式适配（原项目核心） */
+@media (max-width: 768px) {
+    .festive-title {
+        font-size: 2rem;
+    }
+    .festive-card {
+        padding: 20px;
+    }
+    .auth-card {
+        padding: 30px 20px;
+    }
+    .festive-table th,
+    .festive-table td {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+    }
+    .user-menu {
+        top: 10px;
+        right: 10px;
+    }
+    #user-menu-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}

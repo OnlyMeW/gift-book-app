@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>礼金簿 - 喜庆版（原功能完整还原）</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        /* 原项目核心喜庆样式（完整保留） */
+        .book-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #fff8f8;
+            border-radius: 20px;
+            border: 3px solid #d32f2f;
+            box-shadow: 0 10px 30px rgba(211, 47, 47, 0.2);
+            margin-top: 20px;
+        }
+        .book-header {
+            text-align: center;
+            color: #d32f2f;
+            border-bottom: 2px dashed #ffcccc;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .book-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(211, 47, 47, 0.2);
+        }
+        .book-header .subtitle {
+            font-size: 1.2rem;
+            color: #7f0000;
+        }
+        /* 录入区域 */
+        .input-area {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d32f2f;
+            font-weight: 600;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffcccc;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #7f0000;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #d32f2f;
+        }
+        /* 礼金簿表格 */
+        .gift-book-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .gift-book-table th {
+            background: #d32f2f;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .gift-book-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ffcccc;
+            color: #7f0000;
+        }
+        .gift-book-table tr:hover {
+            background: #fff0f0;
+        }
+        /* 统计区域 */
+        .stats-area {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(to right, #d32f2f, #ff6b6b);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 180px;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+        }
+        .stat-card .label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        /* 功能按钮 */
+        .btn-area {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .func-btn {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #d32f2f, #ff6b6b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+            transition: all 0.3s;
+        }
+        .func-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(211, 47, 47, 0.3);
+        }
+        /* 副屏链接 */
+        .screen-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .screen-link a {
+            color: #d32f2f;
+            font-size: 1.1rem;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px dashed #d32f2f;
+            padding-bottom: 3px;
+        }
+    </style>
+</head>
+<body class="theme-festive">
+    <!-- 用户中心（置顶，不影响原布局） -->
+    <div class="user-menu" style="position: absolute; top: 20px; right: 20px; z-index: 999;">
+        <button id="user-menu-btn" style="padding: 8px 15px; background: #d32f2f; color: white; border: none; border-radius: 8px; cursor: pointer;">用户中心</button>
+        <div class="user-dropdown" style="display: none; position: absolute; top: 100%; right: 0; background: white; border: 2px solid #ffcccc; border-radius: 8px; padding: 10px; box-shadow: 0 4px 12px rgba(211, 47, 47, 0.1);">
+            <button id="change-pwd-btn" style="display: block; width: 100%; padding: 8px; border: none; background: transparent; color: #d32f2f; cursor: pointer; text-align: left;">修改密码</button>
+            <button id="logout-btn" style="display: block; width: 100%; padding: 8px; border: none; background: transparent; color: #d32f2f; cursor: pointer; text-align: left;">退出登录</button>
+        </div>
+    </div>
+
+    <!-- 密码修改弹窗 -->
+    <div id="pwd-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(211, 47, 47, 0.5); justify-content: center; align-items: center; z-index: 1000;">
+        <div style="background: white; padding: 30px; border-radius: 15px; border: 2px solid #ffcccc; width: 90%; max-width: 400px;">
+            <h3 style="color: #d32f2f; margin-bottom: 20px; text-align: center;">修改密码</h3>
+            <form id="change-pwd-form">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; color: #d32f2f; margin-bottom: 5px;">原密码</label>
+                    <input type="password" id="old-pwd" required style="width: 100%; padding: 10px; border: 2px solid #ffcccc; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; color: #d32f2f; margin-bottom: 5px;">新密码</label>
+                    <input type="password" id="new-pwd" required style="width: 100%; padding: 10px; border: 2px solid #ffcccc; border-radius: 8px;">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: #d32f2f; margin-bottom: 5px;">确认新密码</label>
+                    <input type="password" id="confirm-pwd" required style="width: 100%; padding: 10px; border: 2px solid #ffcccc; border-radius: 8px;">
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button type="submit" style="padding: 8px 20px; background: #d32f2f; color: white; border: none; border-radius: 8px; cursor: pointer;">确认修改</button>
+                    <button type="button" id="cancel-pwd" style="padding: 8px 20px; background: #ffcccc; color: #d32f2f; border: none; border-radius: 8px; cursor: pointer;">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 原项目核心礼金簿容器 -->
+    <div class="book-container">
+        <div class="book-header">
+            <h1> 喜庆礼金簿 </h1>
+            <div class="subtitle">记录每一份美好祝福</div>
+        </div>
+
+        <!-- 录入区域（原功能） -->
+        <div class="input-area">
+            <div class="input-group">
+                <label for="name">来宾姓名</label>
+                <input type="text" id="name" placeholder="请输入姓名" required>
+            </div>
+            <div class="input-group">
+                <label for="amount">礼金金额（元）</label>
+                <input type="number" id="amount" step="0.01" placeholder="请输入金额" required>
+            </div>
+            <div class="input-group">
+                <label for="type">礼金类型</label>
+                <select id="type">
+                    <option value="现金">现金</option>
+                    <option value="微信">微信</option>
+                    <option value="支付宝">支付宝</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            <div class="input-group" style="align-self: flex-end;">
+                <button id="add-btn" class="func-btn">✅ 添加记录</button>
+            </div>
+        </div>
+
+        <!-- 统计区域（原功能） -->
+        <div class="stats-area">
+            <div class="stat-card">
+                <div class="label">总人数</div>
+                <div class="value" id="total-people">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">总金额</div>
+                <div class="value" id="total-amount">¥0.00</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">现金金额</div>
+                <div class="value" id="cash-amount">¥0.00</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">电子金额</div>
+                <div class="value" id="electronic-amount">¥0.00</div>
+            </div>
+        </div>
+
+        <!-- 功能按钮区（原功能） -->
+        <div class="btn-area">
+            <button id="export-btn" class="func-btn"> 导出数据</button>
+            <button id="clear-btn" class="func-btn" style="background: linear-gradient(to right, #ff6b6b, #ff4d4f);">️ 清空记录</button>
+        </div>
+
+        <!-- 礼金簿表格（原功能） -->
+        <table class="gift-book-table">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>姓名</th>
+                    <th>金额（元）</th>
+                    <th>类型</th>
+                    <th>记录时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="gift-list">
+                <!-- 数据动态填充 -->
+            </tbody>
+        </table>
+
+        <!-- 副屏展示链接（原功能） -->
+        <div class="screen-link">
+            <a href="guest-screen.html" target="_blank">️ 点击打开副屏展示页面</a>
+        </div>
+    </div>
+
+    <script>
+        // 登录验证（优先执行）
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'auth.html';
+        }
+
+        // 通用提示函数
+        function showToast(msg, isError = false) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                padding: 15px 30px; border-radius: 10px; color: white;
+                background: ${isError ? '#ff4d4f' : '#52c41a'};
+                z-index: 9999; font-size: 1.1rem;
+            `;
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        // 用户中心逻辑
+        document.getElementById('user-menu-btn').addEventListener('click', (e) => {
+            const dropdown = document.querySelector('.user-dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            e.stopPropagation();
+        });
+        document.addEventListener('click', () => {
+            document.querySelector('.user-dropdown').style.display = 'none';
+        });
+
+        // 退出登录
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            showToast('已退出登录');
+            setTimeout(() => window.location.href = 'auth.html', 1000);
+        });
+
+        // 密码修改弹窗
+        document.getElementById('change-pwd-btn').addEventListener('click', () => {
+            document.getElementById('pwd-modal').style.display = 'flex';
+        });
+        document.getElementById('cancel-pwd').addEventListener('click', () => {
+            document.getElementById('pwd-modal').style.display = 'none';
+        });
+
+        // 密码修改提交
+        document.getElementById('change-pwd-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const oldPwd = document.getElementById('old-pwd').value;
+            const newPwd = document.getElementById('new-pwd').value;
+            const confirmPwd = document.getElementById('confirm-pwd').value;
+            
+            if (newPwd !== confirmPwd) {
+                showToast('两次密码不一致', true);
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ oldPassword: oldPwd, newPassword: newPwd })
+                });
+                const data = await res.json();
+                if (data.code === 0) {
+                    showToast('密码修改成功');
+                    document.getElementById('pwd-modal').style.display = 'none';
+                    localStorage.removeItem('token');
+                    setTimeout(() => window.location.href = 'auth.html', 1500);
+                } else {
+                    showToast(data.message, true);
+                }
+            } catch (err) {
+                showToast('修改失败', true);
+            }
+        });
+
+        // ===================== 原项目核心功能（完整还原） =====================
+        let giftList = [];
+
+        // 加载数据（从MySQL获取，替代原localStorage）
+        async function loadData() {
+            try {
+                const res = await fetch('/api/gifts', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.code === 0) {
+                    giftList = data.data;
+                    renderList();
+                    updateStats();
+                }
+            } catch (err) {
+                showToast('加载数据失败', true);
+            }
+        }
+
+        // 渲染列表（原功能）
+        function renderList() {
+            const listEl = document.getElementById('gift-list');
+            listEl.innerHTML = '';
+            giftList.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.amount}</td>
+                    <td>${item.type}</td>
+                    <td>${new Date(item.created_at).toLocaleString()}</td>
+                    <td><button onclick="deleteItem(${item.id})" style="padding: 5px 10px; background: #ff4d4f; color: white; border: none; border-radius: 5px; cursor: pointer;">删除</button></td>
+                `;
+                listEl.appendChild(tr);
+            });
+        }
+
+        // 更新统计（原功能）
+        function updateStats() {
+            // 总人数
+            document.getElementById('total-people').textContent = giftList.length;
+            // 总金额
+            const total = giftList.reduce((sum, item) => sum + Number(item.amount), 0);
+            document.getElementById('total-amount').textContent = `¥${total.toFixed(2)}`;
+            // 现金金额
+            const cash = giftList.filter(item => item.type === '现金').reduce((sum, item) => sum + Number(item.amount), 0);
+            document.getElementById('cash-amount').textContent = `¥${cash.toFixed(2)}`;
+            // 电子金额
+            const electronic = total - cash;
+            document.getElementById('electronic-amount').textContent = `¥${electronic.toFixed(2)}`;
+        }
+
+        // 添加记录（原功能+MySQL持久化）
+        document.getElementById('add-btn').addEventListener('click', async () => {
+            const name = document.getElementById('name').value.trim();
+            const amount = document.getElementById('amount').value.trim();
+            const type = document.getElementById('type').value;
+            
+            if (!name || !amount) {
+                showToast('姓名和金额不能为空', true);
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/gifts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, amount, type })
+                });
+                const data = await res.json();
+                if (data.code === 0) {
+                    showToast('添加成功');
+                    // 清空输入
+                    document.getElementById('name').value = '';
+                    document.getElementById('amount').value = '';
+                    // 重新加载数据
+                    loadData();
+                } else {
+                    showToast(data.message, true);
+                }
+            } catch (err) {
+                showToast('添加失败', true);
+            }
+        });
+
+        // 删除记录（原功能+MySQL持久化）
+        window.deleteItem = async (id) => {
+            if (!confirm('确定删除该记录吗？')) return;
+            try {
+                const res = await fetch(`/api/gifts/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.code === 0) {
+                    showToast('删除成功');
+                    loadData();
+                } else {
+                    showToast(data.message, true);
+                }
+            } catch (err) {
+                showToast('删除失败', true);
+            }
+        };
+
+        // 清空记录（原功能+MySQL持久化）
+        document.getElementById('clear-btn').addEventListener('click', async () => {
+            if (!confirm('确定清空所有记录吗？此操作不可恢复！')) return;
+            try {
+                const res = await fetch('/api/gifts/clear', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.code === 0) {
+                    showToast('清空成功');
+                    loadData();
+                } else {
+                    showToast(data.message, true);
+                }
+            } catch (err) {
+                showToast('清空失败', true);
+            }
+        });
+
+        // 导出数据（原功能）
+        document.getElementById('export-btn').addEventListener('click', () => {
+            if (giftList.length === 0) {
+                showToast('暂无数据可导出', true);
+                return;
+            }
+            // 构造CSV内容
+            let csv = '序号,姓名,金额（元）,类型,记录时间\n';
+            giftList.forEach((item, index) => {
+                csv += `${index + 1},${item.name},${item.amount},${item.type},${new Date(item.created_at).toLocaleString()}\n`;
+            });
+            // 下载CSV
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `礼金簿_${new Date().toLocaleDateString()}.csv`;
+            a.click();
+            showToast('导出成功');
+        });
+
+        // 页面加载时加载数据
+        loadData();
+    </script>
+</body>
+</html>

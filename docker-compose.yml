@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  gift-book:
+    build: .
+    restart: always
+    container_name: gift-book
+    network_mode: host # 关键：共享宿主网络，便于访问本地MySQL
+    environment:
+      - NODE_ENV=production
+      # 数据库配置（必须替换为你的实际信息）
+      - DB_HOST=xxx # 你的数据库IP
+      - DB_USER=root # 你的MySQL用户名
+      - DB_PASSWORD=xxx # 替换为实际密码
+      - DB_NAME=gift_book
+      - DB_PORT=3306
+      # JWT密钥（建议替换为随机字符串）
+      - JWT_SECRET=gift_book_2025_secure_key_123456
+      - PORT=56021
+    volumes:
+      # 挂载本地项目目录到容器，修改代码无需重新构建
+      - ./:/app
+      - /app/node_modules
+    # 移除ports（host模式下无效）
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# 无需创建MySQL容器（使用本地已有）
+volumes:
+  mysql-data: # 仅保留空定义，避免报错
+    external: false    

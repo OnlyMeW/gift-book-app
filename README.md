@@ -1,5 +1,5 @@
 # 电子礼簿系统（Gift Book app）
-电子礼簿系统是一款面向喜事礼金记录的 Web 应用，支持用户注册登录、礼金录入、密码修改等功能。系统采用前后端分离架构，前端使用原生 HTML + JavaScript + Tailwind CSS，后端使用 Node.js + Express + MySQL，可通过 Docker Compose 一键部署。
+电子礼簿系统是一款面向喜事礼金记录的 Web 应用，支持用户注册登录、礼金录入、密码修改等功能。系统采用前后端分离架构，前端使用原生 HTML + JavaScript + Tailwind CSS，后端使用 Node.js + Express + MySQL，可通过 Docker Compose 一键部署。数据持久化存储到 MySQL中。
 # 功能特点
 - 用户注册与登录
 - 登录后可修改密码、退出登录

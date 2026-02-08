@@ -153,27 +153,5 @@ http://<服务器IP>:8080
 ## 后端开发
 后端入口文件为 server.js
 
-# 常见问题
-## 1. 后端连接数据库超时（ETIMEDOUT）
-确认数据库地址、端口正确
-确认数据库允许远程连接
-确认服务器防火墙已开放 3306 端口
-进入后端容器测试连通性：
-```
-docker exec -it gift-book-backend-1 ping <DB_HOST>
-docker exec -it gift-book-backend-1 telnet <DB_HOST> 3306
-```
-## 2. 前端页面无法访问
-检查 8080 端口是否被占用
-查看前端容器日志：
-`
-docker logs gift-book-frontend-1`
-## 3. 接口调用失败
-检查后端容器是否正常运行：
-`
-docker ps | grep gift-book-backend-1`
-查看后端日志：
-`
-docker logs gift-book-backend-1`
 #  许可证
 本项目为个人开源项目，仅供学习和自用，可根据需要自由修改和扩展。
